@@ -169,7 +169,6 @@
             <button class="tab-btn" onclick="switchTab('events')"><i class="fas fa-calendar-alt"></i> Events & Parties</button>
         </div>
 
-        <!-- INVESTORS VIEW -->
         <div id="investorsView">
             <div class="filters-box">
                 <h2><i class="fas fa-filter"></i> Filter Investors</h2>
@@ -208,7 +207,6 @@
             <div class="grid" id="investorGrid"></div>
         </div>
 
-        <!-- AI VIEW -->
         <div id="aiView" style="display: none;">
             <div class="ai-match-container">
                 <h2 style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-robot" style="color: #667eea;"></i> AI Investor Matchmaker</h2>
@@ -228,13 +226,11 @@
             <div id="aiResults" class="grid"></div>
         </div>
 
-        <!-- EVENTS VIEW -->
         <div id="eventsView" style="display: none;">
             <div class="grid" id="eventsGrid"></div>
         </div>
     </div>
 
-    <!-- Investor Detail Modal -->
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -249,8 +245,7 @@
     </div>
 
     <script>
-    // --- 1. DATASETS (MUST BE FIRST) ---
-    // Ensure all data is defined before any logic tries to use it.
+    // --- 1. DATASETS ---
     const investors = [
         {id: 1, firstName: "Jason", lastName: "Calacanis", company: "All-In Podcast / LAUNCH", title: "Angel Investor & Co-Host", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Fintech, AI, Marketplaces", location: "San Francisco", email: "jmc@launch.co", linkedin: "https://linkedin.com/in/jasoncalacanis", twitter: "@Jason", portfolio: "Uber (early), Robinhood, Calm, Wealthfront", ces: "CES 2026 Keynote Speaker - All-In Interview", priority: 1, notes: "Early Uber, Robinhood investor. CES 2026 keynote speaker."},
         {id: 2, firstName: "Hemant", lastName: "Taneja", company: "General Catalyst", title: "CEO", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Enterprise, AI, Climate Tech, Health Tech", location: "Boston", email: "hemant@generalcatalyst.com", linkedin: "https://linkedin.com/in/hemanttaneja", twitter: "@htaneja", portfolio: "Stripe, Snap, Airbnb, Gusto, Livongo", ces: "CES 2026 Keynote Speaker - All-In Interview", priority: 1, notes: "$40B+ AUM. CES 2026 keynote speaker."},
@@ -343,7 +338,7 @@
         {id: 89, firstName: "Gary", lastName: "Shapiro", company: "Consumer Technology Association (CTA)", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Policy, Innovation", location: "Washington DC", email: "gshapiro@cta.tech", linkedin: "https://www.linkedin.com/in/garyshapiro", twitter: "", portfolio: "CTA Fund, Active Angel", ces: "Host of CES 2026", priority: 1, notes: ""}
     ];
 
-    // --- 2. EVENT DATA (With Updated IDs) ---
+    // --- 2. EVENT DATA ---
     const events = [
         {
             title: "CES Unveiled Las Vegas",
@@ -451,7 +446,6 @@
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        // Find button by text or specific class since onclick selector is fragile
         const tabs = document.querySelectorAll('.tab-btn');
         if(tabId === 'investors') tabs[0].classList.add('active');
         if(tabId === 'ai') tabs[1].classList.add('active');
@@ -687,8 +681,8 @@
     // --- 4. AI BACKEND CONNECTION ---
 
     async function callGemini(promptText) {
-        // Changed to 'proxy' to match your latest backend filename
-        const url = "/.netlify/functions/proxy";
+        // Updated to match the proxy file name
+        const url = "/.netlify/functions/proxy"; 
         
         try {
             const response = await fetch(url, {
@@ -794,7 +788,7 @@
         }
     }
 
-    // --- 5. INITIALIZATION (RUNS IMMEDIATELY) ---
+    // --- 5. INITIALIZATION ---
     function init() {
         console.log("App Initializing...");
         document.getElementById('totalCount').textContent = investors.length;
@@ -802,10 +796,7 @@
         displayCards();
     }
 
-    // Run now
     init();
-
-    // Re-run on load just to be safe
     window.addEventListener('DOMContentLoaded', init);
     
     </script>
