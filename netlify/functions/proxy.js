@@ -27,7 +27,11 @@ exports.handler = async function(event, context) {
   }
 
   // 4. Send to Google (Free Model)
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+// OLD (BROKEN): 
+// const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+// NEW (WORKING for DEC 2025):
+const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
   try {
     const response = await fetch(url, {
