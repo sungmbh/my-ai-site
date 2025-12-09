@@ -21,6 +21,46 @@
         .badge { background: rgba(255, 255, 255, 0.2); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge.verified-badge { background: rgba(39, 174, 96, 0.3); }
         
+        /* TICKER STYLES */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(15, 15, 30, 0.9);
+            border-bottom: 1px solid rgba(33, 130, 165, 0.3);
+            padding-left: 100%; /* Start off-screen */
+            box-sizing: content-box;
+        }
+
+        .ticker {
+            display: inline-block;
+            height: 35px;
+            line-height: 35px;
+            white-space: nowrap;
+            padding-right: 100%;
+            box-sizing: content-box;
+            animation: ticker 40s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 13px;
+            color: #00f2ff; /* Neon Cyan */
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ticker-item i { margin-right: 8px; color: #ff00ff; /* Neon Pink icons */ }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        .ticker-wrap:hover .ticker { animation-play-state: paused; }
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
         /* Hero & Tabs */
@@ -142,15 +182,13 @@
 </head>
 <body>
     <header>
-
-
-<div class="logo-section">
-    <a href="https://www.mvl.biz/" target="_blank" style="text-decoration: none; display: flex; align-items: center;">
-        <img src="Mosaic Venture Lab_U.png" alt="Mosaic Venture Lab" class="mosaic-logo">
-    </a>
-    <div class="logo" style="margin-left: 15px;"><i class="fas fa-rocket"></i> CES 2026 Investors</div>
-</div>
-            
+        <div class="header-content">
+            <div class="logo-section">
+                <a href="https://www.mvl.biz/" target="_blank" style="text-decoration: none; display: flex; align-items: center;">
+                    <img src="Mosaic Venture Lab_U.png" alt="Mosaic Venture Lab" class="mosaic-logo">
+                </a>
+                <div class="logo" style="margin-left: 15px;"><i class="fas fa-rocket"></i> CES 2026 Investors</div>
+            </div>
             <div class="header-badges">
                 <div class="badge">Jan 6-9, 2026</div>
                 <div class="badge verified-badge"><i class="fas fa-check-circle"></i> <span id="badgeCount">Loading...</span> Verified Investors</div>
@@ -158,6 +196,17 @@
             </div>
         </div>
     </header>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><i class="fas fa-bolt"></i> PRO TIP: Use the AI Matchmaker to generate custom icebreakers</div>
+            <div class="ticker-item"><i class="fas fa-globe"></i> 99 Investors Verified</div>
+            <div class="ticker-item"><i class="fas fa-calendar-check"></i> Don't miss: Silicon Valley Funding Summit (Jan 5)</div>
+            <div class="ticker-item"><i class="fas fa-user-secret"></i> Mark Cuban confirmed for Shark Tank judging (Jan 8)</div>
+            <div class="ticker-item"><i class="fas fa-exclamation-triangle"></i> Taiwan Tech Arena Opening Ceremony (Jan 6 @ 10 AM)</div>
+            <div class="ticker-item"><i class="fas fa-envelope-open-text"></i> Remember: Investors get 500+ emails a day. Be brief.</div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="hero">
@@ -234,7 +283,7 @@
 
         <div style="text-align: center; margin-top: 40px; margin-bottom: 20px; font-size: 14px; opacity: 0.8;">
             <p style="margin-bottom: 8px;">Know an investor attending CES who is missing?</p>
-            <a href="mailto:vh@mvl.biz?subject=New CES Investor&body=Name: %0ACompany: %0ALinkedIn:" 
+            <a href="mailto:contact@mosaicventurelab.com?subject=New CES Investor&body=Name: %0ACompany: %0ALinkedIn:" 
                style="color: var(--primary); font-weight: bold; text-decoration: none; border-bottom: 1px dashed var(--primary); padding-bottom: 2px;">
                <i class="fas fa-plus-circle"></i> Submit an Investor
             </a>
