@@ -1,1 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CES 2026 Investor Database</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* CSS STYLES */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #2182A5; --primary-dark: #1a6685; --light: #F5F5F5; --dark: #1A1A2E; --gray: #6C757D; --accent: #FF6B6B; --app-color: #2D3436; --linkedin: #0077b5; --ai-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --verified: #27ae60; --corrected: #f39c12; --error: #e74c3c; --unverified: #95a5a6; }
+        
+        /* Body is Dark with White Text */
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 100%); color: #ffffff; line-height: 1.6; padding-bottom: 60px; }
+        
+        /* Header */
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 20px 0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo-section { display: flex; align-items: center; gap: 15px; padding-right: 20px; border-right: 2px solid rgba(255, 255, 255, 0.2); }
+        .mosaic-logo { height: 40px; width: auto; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: white; }
+        .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .badge { background: rgba(255, 255, 255, 0.2); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.verified-badge { background: rgba(39, 174, 96, 0.3); }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* Hero & Tabs */
+        .hero { text-align: center; margin-bottom: 30px; }
+        .hero h1 { font-size: 42px; font-weight: 800; color: white; margin-bottom: 10px; }
+        .hero p { font-size: 18px; color: rgba(255, 255, 255, 0.8); max-width: 600px; margin: 0 auto; }
+        
+        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 50px; width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(10px); }
+        .tab-btn { padding: 12px 30px; border: none; border-radius: 40px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; background: transparent; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; }
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .tab-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.1); }
+        .tab-btn.ai-tab.active { background: var(--ai-gradient); color: white; }
+        .ai-sparkle { color: #FFD700; }
 
+        /* Filters Box - White Background, Dark Text */
+        .filters-box { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); color: var(--dark); }
+        .filters-box h2 { font-size: 18px; margin-bottom: 20px; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+        .filter-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-group label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 8px; font-weight: 600; }
+        .filter-group input, .filter-group select { padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s; background: white; color: #333; }
+        .filter-group input:focus, .filter-group select:focus { border-color: var(--primary); outline: none; }
+        
+        .button-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: #f0f0f0; color: var(--dark); }
+        .btn-ai { background: var(--ai-gradient); color: white; border: none; }
+        .btn-ai:hover { box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4); }
+
+        /* Grids */
+        .results-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .results-count { font-size: 16px; color: white; font-weight: 600; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        /* Investor Card - White Background, Dark Text */
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s; color: var(--dark); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .card-header { background: linear-gradient(135deg, var(--primary) 0%, #50a7d1 100%); padding: 20px; color: white; position: relative; }
+        .priority-badge { position: absolute; top: 15px; right: 15px; background: var(--accent); color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
+        
+        .card-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .card-company { font-size: 14px; opacity: 0.95; font-weight: 500; margin-bottom: 2px; }
+        .card-title { font-size: 12px; opacity: 0.8; }
+        .card-body { padding: 20px; flex: 1; }
+        .info-block { margin-bottom: 12px; }
+        .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); font-weight: 700; margin-bottom: 4px; }
+        .info-value { font-size: 13px; color: var(--dark); font-weight: 500; }
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .tag { background: #f4f6f8; color: var(--dark); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; border: 1px solid #e1e4e8; }
+        .highlight { background: rgba(255, 107, 107, 0.08); border-left: 3px solid var(--accent); padding: 10px; border-radius: 0 6px 6px 0; margin-top: 15px; }
+        .highlight-label { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 800; margin-bottom: 2px; }
+        .highlight-text { font-size: 12px; font-weight: 600; color: #d63031; }
+        
+        .card-footer { padding: 15px 20px; border-top: 1px solid #f0f0f0; display: flex; gap: 10px; background: #fafafa; }
+        .btn-small { flex: 1; padding: 10px 8px; font-size: 13px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; text-decoration: none; text-align: center; display: inline-flex; justify-content: center; align-items: center; gap: 6px; color: #333; }
+        .btn-details { background: white; color: var(--dark); border: 1px solid #ddd; }
+        .btn-details:hover { background: #f0f0f0; }
+        .btn-linkedin { background: var(--linkedin); color: white; border: 1px solid var(--linkedin); }
+        .btn-linkedin:hover { background: #006097; }
+        .btn-linkedin.disabled { background: #e0e0e0; color: #999; border-color: #e0e0e0; cursor: not-allowed; pointer-events: none; }
+
+        /* Event Card Styles */
+        .event-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; height: 100%; border-left: 6px solid var(--primary); color: var(--dark); }
+        .event-header { padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: start; }
+        .event-date-badge { text-align: center; background: white; padding: 5px 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; min-width: 60px; }
+        .event-month { font-size: 10px; font-weight: 800; color: var(--gray); text-transform: uppercase; }
+        .event-day { font-size: 18px; font-weight: 800; color: var(--primary); line-height: 1.2; }
+        .event-details-header { flex: 1; margin-left: 15px; }
+        .event-type { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+        .type-keynote { background: #e3f2fd; color: #1565c0; }
+        .type-party { background: #f3e5f5; color: #7b1fa2; }
+        .type-competition { background: #e8f5e9; color: #2e7d32; }
+        .type-panel { background: #fff3e0; color: #ef6c00; }
+        .event-title { font-size: 16px; font-weight: 700; color: var(--dark); line-height: 1.3; }
+        .event-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .event-meta { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 13px; color: var(--gray); }
+        .meta-item { display: flex; align-items: center; gap: 6px; }
+        .event-desc { font-size: 13px; color: #444; margin-bottom: 20px; line-height: 1.5; flex: 1; }
+        .attendees-section { background: #fafafa; padding: 15px; border-radius: 8px; margin-top: auto; }
+        .attendees-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+        .attendee-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .attendee-chip { display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #eee; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--dark); cursor: pointer; transition: all 0.2s; }
+        .attendee-chip:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .attendee-icon { font-size: 10px; color: var(--primary); }
+
+        /* Modal - Dark Text inside */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); overflow-y: auto; }
+        .modal-content { background: white; margin: 5% auto; width: 90%; max-width: 700px; border-radius: 12px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); color: var(--dark); }
+        .modal-header { background: linear-gradient(135deg, var(--primary) 0%, #50a7d1 100%); padding: 25px; color: white; display: flex; justify-content: space-between; border-radius: 12px 12px 0 0; }
+        .modal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; }
+        .modal-body { padding: 25px; max-height: 70vh; overflow-y: auto; }
+        .modal-section { margin-bottom: 25px; }
+        .modal-section h3 { font-size: 14px; border-bottom: 2px solid var(--primary); padding-bottom: 8px; margin-bottom: 12px; color: var(--primary-dark); }
+        
+        /* AI Styles */
+        .ai-match-container { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); margin-bottom: 30px; border: 2px solid transparent; background-clip: padding-box; position: relative; color: var(--dark); }
+        .ai-match-container::before { content: ""; position: absolute; top: -2px; bottom: -2px; left: -2px; right: -2px; background: var(--ai-gradient); z-index: -1; border-radius: 14px; }
+        .ai-input-group { margin-bottom: 20px; }
+        .ai-input-group label { display: block; font-weight: 700; margin-bottom: 10px; color: var(--dark); font-size: 16px; }
+        .ai-textarea { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 15px; min-height: 100px; resize: vertical; transition: border-color 0.3s; color: var(--dark); }
+        .ai-textarea:focus { border-color: #667eea; outline: none; }
+        .ai-loading { display: none; text-align: center; padding: 20px; color: #fff; } /* Fixed loading text color */
+        .ai-loading i { animation: spin 1s linear infinite; margin-right: 10px; }
+        .ai-email-box { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 15px; margin-top: 15px; display: none; position: relative; color: var(--dark); }
+        .ai-email-content { white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #333; line-height: 1.6; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; background: white; border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; color: var(--dark); }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .grid { grid-template-columns: 1fr; }
+            .nav-tabs { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .tab-btn { padding: 10px 10px; font-size: 13px; flex: 1; white-space: nowrap; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="https://raw.githubusercontent.com/sungmbh/ces-2026-radar/main/Mosaic%20Venture%20Lab_U.png" alt="Mosaic Venture Lab" class="mosaic-logo">
+                <div class="logo"><i class="fas fa-rocket"></i> CES 2026 Investors</div>
+            </div>
+            <div class="header-badges">
+                <div class="badge">Jan 6-9, 2026</div>
+                <div class="badge verified-badge"><i class="fas fa-check-circle"></i> <span id="badgeCount">Loading...</span> Verified Investors</div>
+                <div class="badge">Last Updated: Dec 8, 2025</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>CES 2026 Investor Database</h1>
+            <p>Verified investor database and AI-powered cold email generation with recent investor news integration.</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('investors')"><i class="fas fa-users"></i> Find Investors</button>
+            <button class="tab-btn ai-tab" onclick="switchTab('ai')"><i class="fas fa-magic ai-sparkle"></i> AI Matchmaker</button>
+            <button class="tab-btn" onclick="switchTab('events')"><i class="fas fa-calendar-alt"></i> Events & Parties</button>
+        </div>
+
+        <!-- INVESTORS VIEW -->
+        <div id="investorsView">
+            <div class="filters-box">
+                <h2><i class="fas fa-filter"></i> Filter Investors</h2>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Search</label>
+                        <input type="text" id="search" placeholder="Name, company..." oninput="filterInvestors()">
+                    </div>
+                    <div class="filter-group">
+                        <label>Investor Type</label>
+                        <select id="type" onchange="filterInvestors()">
+                            <option value="">All Types</option>
+                            <option value="Venture Capital">Venture Capital</option>
+                            <option value="Corporate VC">Corporate VC</option>
+                            <option value="Angel Investor">Angel Investor</option>
+                            <option value="Institutional Investor">Institutional Investor</option>
+                            <option value="Family Office">Family Office</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Focus Area</label>
+                        <input type="text" id="focus" placeholder="AI, Climate, Robotics..." oninput="filterInvestors()">
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-primary" onclick="filterInvestors()"><i class="fas fa-search"></i> Search</button>
+                    <button class="btn btn-secondary" onclick="resetFilters()"><i class="fas fa-redo"></i> Reset</button>
+                    <button class="btn btn-secondary" onclick="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+                </div>
+            </div>
+            
+            <div class="results-info">
+                <div class="results-count">Showing <span id="resultCount">0</span> of <span id="totalCount">0</span> verified investors</div>
+            </div>
+            
+            <div class="grid" id="investorGrid"></div>
+        </div>
+
+        <!-- AI VIEW -->
+        <div id="aiView" style="display: none;">
+            <div class="ai-match-container">
+                <h2 style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-robot" style="color: #667eea;"></i> AI Investor Matchmaker</h2>
+                <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Powered by Gemini AI. Describe your startup below, and the AI will analyze verified investor portfolios to find your best matches.</p>
+                
+                <div class="ai-input-group">
+                    <label>What are you building?</label>
+                    <textarea class="ai-textarea" id="startupDescription" placeholder="e.g. I'm building an AI-powered drone for sustainable agriculture in the Seed stage. We use computer vision to detect crop health..."></textarea>
+                </div>
+                <button class="btn btn-ai" onclick="runMatchmaker()"><i class="fas fa-search"></i> Analyze & Find Matches</button>
+                
+                <div id="aiLoading" class="ai-loading">
+                    <i class="fas fa-spinner"></i> Analyzing portfolios with Gemini AI...
+                </div>
+            </div>
+            
+            <div id="aiResults" class="grid"></div>
+        </div>
+
+        <!-- EVENTS VIEW -->
+        <div id="eventsView" style="display: none;">
+            <div class="grid" id="eventsGrid"></div>
+        </div>
+    </div>
+
+    <!-- Investor Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div id="modalName" style="font-size: 20px; font-weight: 700;"></div>
+                    <div id="modalCompany" style="font-size: 13px; opacity: 0.9;"></div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+    // --- 1. DATASETS (MUST BE FIRST) ---
+    // Ensure all data is defined before any logic tries to use it.
+    const investors = [
+        {id: 1, firstName: "Jason", lastName: "Calacanis", company: "All-In Podcast / LAUNCH", title: "Angel Investor & Co-Host", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Fintech, AI, Marketplaces", location: "San Francisco", email: "jmc@launch.co", linkedin: "https://linkedin.com/in/jasoncalacanis", twitter: "@Jason", portfolio: "Uber (early), Robinhood, Calm, Wealthfront", ces: "CES 2026 Keynote Speaker - All-In Interview", priority: 1, notes: "Early Uber, Robinhood investor. CES 2026 keynote speaker."},
+        {id: 2, firstName: "Hemant", lastName: "Taneja", company: "General Catalyst", title: "CEO", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Enterprise, AI, Climate Tech, Health Tech", location: "Boston", email: "hemant@generalcatalyst.com", linkedin: "https://linkedin.com/in/hemanttaneja", twitter: "@htaneja", portfolio: "Stripe, Snap, Airbnb, Gusto, Livongo", ces: "CES 2026 Keynote Speaker - All-In Interview", priority: 1, notes: "$40B+ AUM. CES 2026 keynote speaker."},
+        {id: 3, firstName: "Modar", lastName: "Alaoui", company: "ALM Ventures", title: "Founder & General Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Humanoid Robotics, Embodied AI, Spatial AI", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/modaralaoui", twitter: "", portfolio: "Humanoids Summit, Eyeris (acquired by Amazon)", ces: "CES 2026 Robotics Track", priority: 1, notes: "Hosting Humanoids Summit (Dec 2025). Active in CES Robotics track."},
+        {id: 4, firstName: "Peter", lastName: "Bodenheimer", company: "PeakBridge VC", title: "Venture Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Agri-Food Tech, Sustainable Food Systems", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/pbodenheimer", twitter: "", portfolio: "Food innovation startups", ces: "ShowStoppers @ CES 2026", priority: 2, notes: "Focus on food innovation and sustainability."},
+        {id: 5, firstName: "Amit", lastName: "Chaturvedy", company: "SE Ventures (Schneider Electric)", title: "Global Head & Managing Partner", type: "Corporate VC", stage: ["Series A", "Series B", "Growth"], focus: "Energy Tech, Industrial IoT, Enterprise AI, Sustainability", location: "New York", email: "", linkedin: "https://linkedin.com/in/amit-chaturvedy", twitter: "", portfolio: "Schneider Electric CVC Portfolio", ces: "Speaker: Investing in the Energy Transition", priority: 1, notes: "Oversees €1B+ CVC platform."},
+        {id: 6, firstName: "Corinna", lastName: "Chen", company: "Material Impact", title: "Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Advanced Materials, Material Science, Climate Tech", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/corinnaxchen", twitter: "", portfolio: "Deep tech materials startups", ces: "CES 2026 Climate Tech Track", priority: 2, notes: "Deep tech materials focus."},
+        {id: 7, firstName: "Kevin", lastName: "Dowling", company: "Innovation Works", title: "Managing Director, Robotics & Hardware Acceleration", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Robotics, Hardware Acceleration, Industrial Tech", location: "Pittsburgh", email: "", linkedin: "https://linkedin.com/in/kdowling", twitter: "", portfolio: "Carnegie Mellon robotics spinouts", ces: "Speaker: Betting on Bots Panel", priority: 1, notes: "Pittsburgh robotics ecosystem leader."},
+        {id: 8, firstName: "Paul", lastName: "Deninger", company: "Material Impact", title: "Operating Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Deep Tech, Materials Science, Circular Economy", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/pauldeninger", twitter: "", portfolio: "Generation Phoenix (Chairman)", ces: "CES 2026 Deep Tech Track", priority: 2, notes: "Also Chairman of Generation Phoenix."},
+        {id: 9, firstName: "Sean", lastName: "Glass", company: "Evidenced", title: "Founder & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Early-Stage Tech, Healthtech, Enterprise", location: "San Francisco", email: "sean@evidenced.com", linkedin: "https://linkedin.com/in/seanglass", twitter: "", portfolio: "Acceleprise accelerator alumni", ces: "CES 2026 Healthtech Track", priority: 2, notes: "Previously co-founded Acceleprise."},
+        {id: 10, firstName: "Peipei", lastName: "Zhao", company: "RoboSense", title: "President, North America", type: "Corporate VC", stage: ["Series A", "Series B", "Growth"], focus: "Automotive LiDAR, Robotics Sensors, ADAS", location: "Michigan / Hong Kong", email: "", linkedin: "https://linkedin.com/in/peipeizhaomich", twitter: "", portfolio: "RoboSense LiDAR ecosystem", ces: "Judge: Silicon Valley Funding Summit", priority: 1, notes: "Name corrected from Zhou to Zhao."},
+        {id: 11, firstName: "Maria", lastName: "Rotilu", company: "OpenseedVC", title: "Founder & General Partner", type: "Venture Capital", stage: ["Pre-Seed", "Seed"], focus: "Early-Stage Deep Tech, Pre-seed", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/mariarotilu", twitter: "", portfolio: "Day-zero startups", ces: "CES Unveiled Las Vegas Judge", priority: 2, notes: "Day-zero investing focus."},
+        {id: 12, firstName: "Evelien", lastName: "de Vries", company: "ASML", title: "Partnership Manager, Startups & VC", type: "Corporate VC", stage: ["Series A", "Series B"], focus: "Semiconductors, Photonics, Chip Manufacturing", location: "Netherlands", email: "", linkedin: "https://linkedin.com/in/esdevries1", twitter: "", portfolio: "ASML Startup Partnership", ces: "CES Unveiled Europe Judge", priority: 2, notes: "Title corrected."},
+        {id: 13, firstName: "Andrew", lastName: "Karsh", company: "Bay Bridge Ventures", title: "General Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Digital Health, AI, Deep Tech", location: "San Francisco", email: "andrew@baybridgevc.com", linkedin: "https://linkedin.com/in/andrewkarsh", twitter: "", portfolio: "CalPERS-backed portfolio", ces: "CES 2026 Digital Health Track", priority: 2, notes: "CalPERS connection."},
+        {id: 14, firstName: "Will", lastName: "Borthwick", company: "BOLD Capital Partners", title: "Principal", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Longevity, Healthtech, Space, AI, Exponential Tech", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/will-borthwick-8b756922", twitter: "", portfolio: "Peter Diamandis portfolio", ces: "CES 2026 Exponential Tech Track", priority: 2, notes: "Peter Diamandis fund."},
+        {id: 15, firstName: "Aaron", lastName: "Rose", company: "GT Ventures / Global Tactics", title: "Managing Director", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Automotive Tech, Autonomous Driving, Drone Tech", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/aaronrose", twitter: "", portfolio: "Automotive and drone startups", ces: "CES 2026 Automotive Track", priority: 2, notes: "Company corrected from Jolly Ventures."},
+        {id: 16, firstName: "Sunmeet", lastName: "Jolly", company: "Jolly VC", title: "Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Space Tech, Deep Tech, Climate", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/sunmeet", twitter: "", portfolio: "Space and deep tech startups", ces: "CES 2026 Space Tech Track", priority: 2, notes: "Company corrected from Langrenus Fund."},
+        {id: 17, firstName: "Niraj", lastName: "Saran", company: "Maya Valley Ventures", title: "Founder & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Enterprise SaaS, AI, B2B Software", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/nirajsaran", twitter: "", portfolio: "Enterprise SaaS portfolio", ces: "CES 2026 Enterprise Track", priority: 2, notes: "Title corrected."},
+        {id: 18, firstName: "James", lastName: "Shen", company: "Pioneer Ventures", title: "Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Consumer Internet, Social, Mobile", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/jamesshen", twitter: "", portfolio: "Consumer tech startups", ces: "CES 2026 Consumer Tech Track", priority: 2, notes: ""},
+        {id: 19, firstName: "Glen", lastName: "Gaddy", company: "Robin Hood Ventures", title: "Managing Member", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Emerging Markets, Mobility Sensors, Mid-Atlantic Tech", location: "Baltimore / Philadelphia", email: "ggaddy@robinhoodventures.com", linkedin: "https://linkedin.com/in/glen-gaddy-549546a7", twitter: "", portfolio: "Mid-Atlantic angel network", ces: "CES 2026 Attendee", priority: 2, notes: "Mid-Atlantic angel/VC network."},
+        {id: 20, firstName: "Laurent", lastName: "Metz", company: "Robin Hood Ventures", title: "Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Advanced Mobility, Sensors, Automotive", location: "Baltimore / Philadelphia", email: "", linkedin: "https://linkedin.com/in/dr-laurent-metz-md-mba", twitter: "", portfolio: "Automotive and sensor companies", ces: "CES 2026 Automotive Track", priority: 2, notes: "MD/MBA background."},
+        {id: 21, firstName: "Mariane", lastName: "Bekker", company: "Founders Bay", title: "Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Startup Investments, Early-Stage", location: "San Francisco", email: "mariane@foundersbay.com", linkedin: "https://linkedin.com/in/marianebekker", twitter: "", portfolio: "Early-stage startups", ces: "Getting to the First Million Panel", priority: 2, notes: "Name corrected from Marianne."},
+        {id: 22, firstName: "Bernie", lastName: "Kong", company: "Langrenus Fund", title: "Co-Founder", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Space Tech, Deep Tech, Lunar Economy", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/bernienkong", twitter: "", portfolio: "Space and lunar tech startups", ces: "CES 2026 Space Track", priority: 2, notes: "Title corrected from Senior Manager."},
+        {id: 23, firstName: "Kristi", lastName: "Bradford", company: "Pragmatic Frontiers", title: "Founder & Managing Director", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Frontier Tech, Emerging Tech", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/kristi-bradford-12375222", twitter: "", portfolio: "Frontier technology startups", ces: "CES 2026 Frontier Tech Track", priority: 2, notes: "Title corrected."},
+        {id: 24, firstName: "Gena", lastName: "Vazquez", company: "Star Nova Ventures", title: "Lead Advisor", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Technology, Software, AI", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/genavazquez", twitter: "", portfolio: "Tech startups", ces: "CES 2026 Software Track", priority: 2, notes: "Company corrected from ProForma Ventures."},
+        {id: 25, firstName: "Srini", lastName: "Katta", company: "Independent / Aapoon", title: "Angel Investor & CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Technology, Software, SaaS", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/srini-katta", twitter: "", portfolio: "Early-stage tech investments", ces: "CTA Foundation Pitch Competition Judge", priority: 3, notes: "Also CEO of Aapoon."},
+        {id: 26, firstName: "R. Paul", lastName: "Singh", company: "TiE Angels", title: "Angel Investor", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Technology, TiE Network, Enterprise", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/rpaulsingh", twitter: "", portfolio: "TiE network companies", ces: "CES 2026 TiE Angels Track", priority: 3, notes: "TiE Angels network member."},
+        {id: 27, firstName: "Rita", lastName: "Branco", company: "3xP Global Investments", title: "Impact Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Impact Investing, Sustainability", location: "Lisbon", email: "", linkedin: "https://linkedin.com/in/rita-branco-7383b5", twitter: "", portfolio: "Too Good To Go, Klima", ces: "CES Unveiled Europe Judge", priority: 2, notes: "CES Unveiled Europe pitch judge."},
+        {id: 28, firstName: "Cintia", lastName: "Mano", company: "COREangels", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Angel Investing, Early-Stage, Portugal/Europe", location: "Portugal", email: "", linkedin: "https://linkedin.com/in/cintiamano", twitter: "", portfolio: "European angel network", ces: "CES Unveiled Europe Judge", priority: 2, notes: "CES Unveiled Europe pitch judge."},
+        {id: 29, firstName: "Tomás", lastName: "Penaguião", company: "Bynd Venture Capital", title: "Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Venture Capital, Technology, Iberian Tech", location: "Portugal", email: "", linkedin: "https://linkedin.com/in/tomaspenaguiao", twitter: "", portfolio: "Farfetch, Unbox, Grover", ces: "CES 2026 European VC Track", priority: 2, notes: "Leading Iberian early-stage VC."},
+        {id: 30, firstName: "Victoria", lastName: "Slivkoff", company: "Walden Catalyst / Extreme Tech Challenge", title: "Executive MD (XTC) & Head of Ecosystem (Walden Catalyst)", type: "Corporate VC", stage: ["Seed", "Series A", "Series B"], focus: "Deep Tech, Climate, Impact, Social Enterprise", location: "Washington DC", email: "victoria@extremetechchallenge.org", linkedin: "https://linkedin.com/in/victoriayslivkoff", twitter: "", portfolio: "XTC Global Competition", ces: "CES 2026 Climate Tech Track", priority: 2, notes: "Updated title and affiliation."},
+        {id: 31, firstName: "Dilhan", lastName: "Pillay", company: "Temasek Holdings", title: "Executive Director & CEO", type: "Institutional Investor", stage: ["Series B", "Growth", "Late Stage"], focus: "Global Tech, AI, Fintech, Infrastructure", location: "Singapore", email: "dilhan@temasek.com.sg", linkedin: "https://sg.linkedin.com/in/dilhanpillay", twitter: "", portfolio: "Adyen, Tencent, VFS Global ($389B+ AUM)", ces: "CES 2026 Keynote - Institutional Investors", priority: 1, notes: "Manages S$389B+ AUM."},
+        {id: 32, firstName: "Olivia", lastName: "Steedman", company: "Teachers Venture Growth (OTPP)", title: "Executive Managing Director & Global Head", type: "Institutional Investor", stage: ["Series B", "Growth"], focus: "Fintech, Enterprise Software, Climate Tech", location: "Toronto", email: "", linkedin: "https://linkedin.com/in/olivia-steedman-13618484", twitter: "", portfolio: "Applyboard, Epic Games, SpaceX", ces: "CES 2026 Institutional Investor Track", priority: 1, notes: "Title corrected."},
+        {id: 33, firstName: "Nicole", lastName: "Musicco", company: "Square Nine Capital (Ex-CalPERS)", title: "Co-Founder & Managing Partner", type: "Institutional Investor", stage: ["All"], focus: "Venture Capital, Co-Investments, Private Equity", location: "Sacramento", email: "", linkedin: "https://ca.linkedin.com/in/nicole-t-musicco-293620101", twitter: "", portfolio: "Former CalPERS private equity", ces: "CES 2026 Pension Fund Track", priority: 2, notes: "Left CalPERS September 2023. Square Nine is her new boutique firm."},
+        {id: 34, firstName: "Anton", lastName: "Orlich", company: "CalPERS", title: "Managing Investment Director, Private Equity", type: "Institutional Investor", stage: ["All"], focus: "Private Equity, Venture Capital, Co-Investments", location: "Sacramento", email: "", linkedin: "", twitter: "", portfolio: "$72B+ private equity portfolio", ces: "CES 2026 Institutional Investor Track", priority: 2, notes: "Title corrected."},
+        {id: 35, firstName: "Chia", lastName: "Song Hwee", company: "Temasek", title: "Co-Chief Executive Officer", type: "Institutional Investor", stage: ["Series B", "Growth"], focus: "Global Investments, Digital Transformation", location: "Singapore", email: "chiasong@temasek.com.sg", linkedin: "https://linkedin.com/in/chia-song-hwee", twitter: "", portfolio: "S$389B+ portfolio", ces: "CES 2026 Keynote Attendee", priority: 1, notes: "Becomes Co-CEO October 2025."},
+        {id: 36, firstName: "Scott", lastName: "Chan", company: "CalSTRS", title: "Chief Investment Officer", type: "Institutional Investor", stage: ["All", "Private Equity", "Late Stage"], focus: "Global Macro, Private Equity, Sustainable Investing", location: "Sacramento", email: "schan@calstrs.com", linkedin: "https://www.linkedin.com/in/chanscott", twitter: "", portfolio: "$330B+ AUM, Global Private Equity", ces: "CES 2026 Institutional Investor Summit", priority: 1, notes: "Replaced Christopher Ailman as CIO in July 2024."},
+        {id: 37, firstName: "Tim", lastName: "Draper", company: "Draper Associates", title: "Founding Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B", "Growth"], focus: "AI, Blockchain, Biotech, Frontier Tech", location: "San Mateo", email: "tim@draper.vc", linkedin: "https://www.linkedin.com/in/timothydraper", twitter: "@TimDraper", portfolio: "Tesla, SpaceX, Skype, Baidu, Coinbase, Twitter, Robinhood", ces: "CES 2026 Keynote Speaker", priority: 1, notes: "Early Tesla, Skype, Bitcoin investor."},
+        {id: 38, firstName: "Bill", lastName: "Reichert", company: "Pegasus Tech Ventures", title: "Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B", "Growth"], focus: "AI, Robotics, Fintech, Healthtech", location: "San Jose", email: "breichert@pegasustechventures.com", linkedin: "https://linkedin.com/in/billreichert", twitter: "", portfolio: "SpaceX, Airbnb, DoorDash, 23andMe", ces: "Host: Startup World Cup @ CES 2026", priority: 1, notes: "Former Garage Technology Ventures."},
+        {id: 39, firstName: "John", lastName: "Chambers", company: "JC2 Ventures", title: "Founder & CEO", type: "Venture Capital", stage: ["Seed", "Series A", "Series B", "Growth"], focus: "Enterprise Tech, IoT, Digital Communications", location: "Palo Alto", email: "jchambers@jc2ventures.com", linkedin: "https://www.linkedin.com/in/johnchambersjc", twitter: "@JohnTChambers", portfolio: "Sprinklr, Uniphore, OpenGov, Pindrop", ces: "CES 2026 Keynote Speaker", priority: 1, notes: "Former Cisco CEO."},
+        {id: 40, firstName: "Eric", lastName: "Hsia", company: "TransLink Capital", title: "Managing Director", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "AI, Digital Health, Retail Tech, Cross-border", location: "Silicon Valley", email: "", linkedin: "", twitter: "", portfolio: "AiFi, Aktiia, Opsys", ces: "CTA Board of Industry Leaders", priority: 2, notes: "US-Asia cross-border focus."},
+        {id: 41, firstName: "Jake", lastName: "Sigal", company: "FM Capital", title: "Technology Operating Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Series B"], focus: "Mobility, Automotive, Connectivity", location: "Detroit / Boulder", email: "", linkedin: "https://linkedin.com/in/jakesigal", twitter: "", portfolio: "Autotech Ventures network", ces: "CTA Executive Board Member", priority: 2, notes: "Mobility and automotive tech focus."},
+        {id: 42, firstName: "Michiel", lastName: "Scheffer", company: "European Innovation Council", title: "President of the Board", type: "Institutional Investor", stage: ["Seed", "Series A", "Series B", "Growth"], focus: "Deep Tech, Green Deal, Health, Frontier Tech", location: "Brussels", email: "michiel.scheffer@eic.europa.eu", linkedin: "https://linkedin.com/in/michielscheffer", twitter: "", portfolio: "EIC Fund ($10B+ budget)", ces: "CES Unveiled Las Vegas Jury", priority: 1, notes: "Oversees €10B+ EIC Fund."},
+        {id: 43, firstName: "Carmichael", lastName: "Roberts", company: "Material Impact", title: "Co-Founder & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Materials Science, Climate Tech, Deep Tech", location: "Boston", email: "", linkedin: "https://www.linkedin.com/in/carmichaelsroberts", twitter: "", portfolio: "Breakthrough Energy Ventures network", ces: "CTA Board of Industry Leaders", priority: 2, notes: "Breakthrough Energy Ventures advisor."},
+        {id: 44, firstName: "Mara", lastName: "Lewis", company: "ID8 Innovation", title: "Co-Founder", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Startups, Accelerator, Diversity, Social Impact", location: "San Francisco", email: "mara@id8innovation.com", linkedin: "https://linkedin.com/in/maralewis", twitter: "", portfolio: "Diverse founders portfolio", ces: "CTA Board of Industry Leaders", priority: 2, notes: "Focus on diverse founders."},
+        {id: 45, firstName: "John", lastName: "Taylor", company: "LG Electronics / LG Tech Ventures", title: "Senior Vice President", type: "Corporate VC", stage: ["Series A", "Series B"], focus: "Home Tech, Mobility, Displays, AI for Home", location: "Englewood Cliffs, NJ", email: "John.Taylor@lge.com", linkedin: "", twitter: "", portfolio: "LG Tech Ventures ($400M Fund)", ces: "CTA Board of Industry Leaders", priority: 2, notes: "LG Corporate VC arm."},
+        {id: 46, firstName: "Mattias", lastName: "Scheek", company: "Angel Investor (Ex-Mayht)", title: "Founder & Angel Investor", type: "Angel Investor", stage: ["Seed"], focus: "Hardware, Audio Tech, Deep Tech", location: "Netherlands", email: "", linkedin: "https://nl.linkedin.com/in/mattias-scheek-539a0349", twitter: "", portfolio: "Mayht (sold to Sonos)", ces: "CES Unveiled Las Vegas Jury", priority: 2, notes: "Founded Mayht (audio tech, sold to Sonos)."},
+        {id: 47, firstName: "Michael", lastName: "Moskowitz", company: "NorthStar Gaming", title: "CEO & Founding Partner", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Gaming, Sports Tech, iGaming", location: "Toronto", email: "", linkedin: "https://linkedin.com/in/michael-moskowitz", twitter: "", portfolio: "Canadian gaming investments", ces: "CTA Board of Industry Leaders", priority: 2, notes: "Canadian gaming industry leader."},
+        {id: 48, firstName: "Bob", lastName: "Sternfels", company: "McKinsey & Company", title: "Global Managing Partner", type: "Institutional Investor", stage: ["Growth", "Late Stage"], focus: "Global Strategy, AI, Sustainability, Digital", location: "San Francisco", email: "", linkedin: "https://www.linkedin.com/in/bob-sternfels", twitter: "", portfolio: "McKinsey global portfolio", ces: "CES 2026 Keynote: All-In Interview", priority: 1, notes: "CES 2026 keynote with All-In Interview."},
+        {id: 49, firstName: "Mitchell", lastName: "Weinstock", company: "HP Tech Ventures", title: "Venture Partner", type: "Corporate VC", stage: ["Series A", "Series B", "Growth"], focus: "Edge Compute, AI, VR/AR, Cybersecurity, 3D Printing", location: "Silicon Valley", email: "mitchell.weinstock@hp.com", linkedin: "https://linkedin.com/in/mitchellweinstock", twitter: "", portfolio: "Mojo Vision, Legitimate, AdHawk", ces: "CES 2026 Judge - SVFS", priority: 2, notes: "HP corporate venture arm."},
+        {id: 50, firstName: "Karen", lastName: "Sheffield", company: "Pachamama Ventures", title: "Founder & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Climate Tech, B2B Enterprise, Sustainability", location: "San Francisco", email: "karen@pachamamavc.com", linkedin: "https://linkedin.com/in/karen-sheffield", twitter: "", portfolio: "ElectricFish, Matereal, Gentian", ces: "CES 2026 Judge - SVFS", priority: 2, notes: "Climate-focused VC."},
+        {id: 51, firstName: "Akif", lastName: "Malik", company: "Podium VC", title: "CEO & Managing Partner", type: "Venture Capital", stage: ["Pre-Seed", "Seed"], focus: "Sports Tech, Media, Entertainment", location: "Silicon Valley", email: "akif@podium.vc", linkedin: "https://linkedin.com/in/akifmalik", twitter: "", portfolio: "Sports tech startups", ces: "CES 2026 Judge - SVFS", priority: 2, notes: "Title corrected."},
+        {id: 52, firstName: "Soyoung", lastName: "Park", company: "1004 Venture Partners", title: "General Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Longevity, Health Tech, Biotech", location: "San Francisco", email: "soyoung@1004partners.com", linkedin: "https://linkedin.com/in/soyoung-park-mba", twitter: "", portfolio: "Nellix, Hotspur, GBT", ces: "CES 2026 Speaker - Healthy Aging", priority: 2, notes: "Longevity and healthtech focus."},
+        {id: 53, firstName: "Mitchell", lastName: "Kominsky", company: "Futureland Ventures", title: "Founder & GP", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Deep Tech, Smart Cities, GovTech", location: "Washington DC", email: "mitch@futurelandventures.com", linkedin: "https://linkedin.com/in/mitchellkominsky", twitter: "", portfolio: "Intermotive, Venture Smarter", ces: "CES 2026 Speaker - Smart Cities", priority: 2, notes: "Former DOT official."},
+        {id: 54, firstName: "Vijay", lastName: "Koduri", company: "Sand Hill Angels", title: "Angel Investor", type: "Angel Investor", stage: ["Seed"], focus: "AI, Gaming, Consumer Tech", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/vijay-koduri-92936", twitter: "", portfolio: "Sizzle.gg, Adyen (Alumni)", ces: "CES 2026 Judge - SVFS", priority: 3, notes: "Premier Silicon Valley angel group."},
+        {id: 55, firstName: "John", lastName: "Ricci", company: "US Angels", title: "Founder & President", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "IoT, Mobile, Health IT", location: "Silicon Valley", email: "john@usangels.com", linkedin: "https://linkedin.com/in/jfricci", twitter: "", portfolio: "Vorbeck, Obiwon, Greenopedia", ces: "CES 2026 Judge - SVFS", priority: 3, notes: "US Angels network founder."},
+        {id: 56, firstName: "Elizabeth", lastName: "Jennings", company: "Venture Atlas Labs", title: "Managing Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Healthcare, Life Sciences", location: "Austin / Global", email: "elizabeth@ventureatlaslabs.com", linkedin: "https://linkedin.com/in/elizabethatventureatlas", twitter: "", portfolio: "Neurolex, Knee Initiative", ces: "CES 2026 Speaker - Digital Health", priority: 2, notes: "Healthcare and life sciences focus."},
+        {id: 57, firstName: "Han", lastName: "Ko", company: "USAKO Group", title: "President & CEO", type: "Venture Capital", stage: ["Series A", "Growth"], focus: "Blockchain, Fintech, PropTech", location: "St. Louis / Seoul", email: "han.ko@usakogroup.com", linkedin: "https://linkedin.com/in/han-ko-3b8814185", twitter: "", portfolio: "Native Agtech, Sahara Street", ces: "CES 2026 Judge - SVFS", priority: 2, notes: "Cross-border US-Korea focus."},
+        {id: 58, firstName: "Tarby", lastName: "Bryant", company: "Sweetwater Capital", title: "Chairman & CEO", type: "Family Office", stage: ["Seed", "Series A"], focus: "Seed Capital, Health AI, Consumer", location: "Atlanta", email: "tarbycbryant@gmail.com", linkedin: "https://linkedin.com/in/tarby-bryant-77469a61", twitter: "", portfolio: "RaaS 99 (AI Cancer Care)", ces: "CES 2026 Judge - Gathering of Angels", priority: 3, notes: "Title corrected."},
+        {id: 59, firstName: "Evelyn", lastName: "Lee", company: "Vine Ventures", title: "Managing Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Impact, EV, Fintech, Climate", location: "Vancouver", email: "evelyn@v-ventures.co", linkedin: "https://linkedin.com/in/evelyn-y-k-lee-45b630160", twitter: "", portfolio: "Rocketplan, Clean Energy Projects", ces: "CES 2026 Judge - SVFS", priority: 2, notes: "Impact investing and climate focus."},
+        {id: 60, firstName: "Adam", lastName: "Grill", company: "Odyssey Group / Vine Ventures", title: "CEO & Group President", type: "Family Office", stage: ["Growth", "Late Stage"], focus: "Global Dev, EV, Battery Tech", location: "New York", email: "adam@odysseymedia.net", linkedin: "https://linkedin.com/in/adamjgrill", twitter: "", portfolio: "Private Family Office Portfolio", ces: "CES 2026 Judge - SVFS", priority: 3, notes: "Also team member at Vine Ventures."},
+        {id: 61, firstName: "Sue", lastName: "Xu", company: "Amino Capital", title: "Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Big Data, AI, Consumer, Enterprise", location: "Silicon Valley", email: "sue@aminocapital.com", linkedin: "https://linkedin.com/in/suexu", twitter: "", portfolio: "Assemblage (Cisco), Orbeus (Amazon)", ces: "Speaker: Betting on Bots & Robotics", priority: 1, notes: "$1B+ AUM. Founded 2012."},
+        {id: 62, firstName: "Ryusuke", lastName: "Hayashi", company: "Energy & Environment Investment", title: "Principal", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Cleantech, Energy Transition, Sustainability", location: "Tokyo", email: "", linkedin: "https://linkedin.com/in/ryusuke-hayashi-a280311", twitter: "", portfolio: "Sustainable Energy Startups", ces: "CES 2026 Attendee", priority: 2, notes: "Japanese cleantech investor."},
+        {id: 63, firstName: "Derek", lastName: "Dukart", company: "North Dakota Retirement & Investment Office", title: "Senior Investment Analyst", type: "Institutional Investor", stage: ["Growth", "Late Stage"], focus: "Multi-Asset, Public/Private Markets", location: "North Dakota", email: "derek.dukart@nd.gov", linkedin: "https://linkedin.com/in/derekdukart", twitter: "", portfolio: "$22B+ AUM", ces: "CES 2026 Attendee", priority: 2, notes: "Email corrected."},
+        {id: 64, firstName: "Warren", lastName: "Packard", company: "AI Fund", title: "Operating Partner", type: "Venture Capital", stage: ["Pre-Seed", "Seed"], focus: "AI, Machine Learning, Robotics", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/warrenjp", twitter: "", portfolio: "Drive.ai, Landing AI, Blue River", ces: "Speaker: Betting on Bots Panel", priority: 1, notes: "Title updated to Operating Partner."},
+        {id: 65, firstName: "Ali", lastName: "Kani", company: "NVIDIA", title: "VP & General Manager, Automotive", type: "Corporate VC", stage: ["Growth", "Strategic"], focus: "Autonomous Vehicles, AI Compute, Robotics", location: "Silicon Valley", email: "akani@nvidia.com", linkedin: "https://linkedin.com/in/ali-kani-b22198", twitter: "", portfolio: "NVIDIA Automotive Ecosystem", ces: "Speaker: Vehicle Tech Investment Trends", priority: 1, notes: "Title and LinkedIn corrected."},
+        {id: 66, firstName: "Tessi", lastName: "Dahlen", company: "Davlyn Investments", title: "President", type: "Family Office", stage: ["Growth"], focus: "PropTech, Real Estate Tech, Smart Home", location: "San Diego", email: "tdahlen@davlyninvestments.com", linkedin: "https://linkedin.com/in/tessi-dahlen-33b26b13", twitter: "", portfolio: "Real Estate Portfolio", ces: "CES 2026 Attendee", priority: 3, notes: "Real estate and PropTech focus."},
+        {id: 67, firstName: "Steve", lastName: "Schmith", company: "u-path Venture Advisors", title: "Founder", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Automotive, Mobility, CVC Strategy", location: "Detroit / Global", email: "", linkedin: "https://linkedin.com/in/steveschmith", twitter: "", portfolio: "Mobility Startups", ces: "Speaker: Vehicle Tech Investment Trends", priority: 2, notes: "Mobility and CVC advisory focus."},
+        {id: 68, firstName: "Mariana", lastName: "Bozesan", company: "AQAL Capital", title: "Co-Founder & President", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "Cleantech, Energy Transition, Integral Investing", location: "Munich / Global", email: "mariana@aqalgroup.com", linkedin: "https://linkedin.com/in/marianabozesan", twitter: "", portfolio: "Sustainable Tech, Climate Startups", ces: "Speaker: Investing in the Energy Transition", priority: 1, notes: "Europes Female Angel Investor of the Year 2019."},
+        {id: 69, firstName: "Dave", lastName: "Spector", company: "Angel Investor / Nanotrace", title: "Co-Founder & Chairman", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, E-commerce, Biotech", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/dspec", twitter: "@dspector", portfolio: "ThirdLove (Co-Founder), Checkr", ces: "CTA Foundation Pitch Competition Judge", priority: 2, notes: "40+ angel investments."},
+        {id: 70, firstName: "Larry", lastName: "Li", company: "Amino Capital", title: "Founder & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "Big Data, AI, Consumer", location: "Palo Alto", email: "larry@aminocapital.com", linkedin: "https://linkedin.com/in/larryli", twitter: "", portfolio: "Chime, Webflow, Rippling, Grail", ces: "Speaker: Getting to the First Million", priority: 1, notes: "Forbes Midas Seed List."},
+        {id: 71, firstName: "Kosuke", lastName: "Kikuchi", company: "Conductive Ventures", title: "Vice President", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Enterprise Software, SaaS, Hardware", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/kosuke-kikuchi-16ab98106", twitter: "", portfolio: "CSC ServiceWorks, Sprinklr, Procore", ces: "CES 2026 Attendee", priority: 2, notes: "Title corrected from Principal."},
+        {id: 72, firstName: "Gian", lastName: "Vergnetti", company: "EnerTech Capital", title: "Partner", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Energy, Mobility, Industry 4.0", location: "Philadelphia", email: "gvergnetti@enertechcapital.com", linkedin: "https://linkedin.com/in/gian-vergnetti-6047b94", twitter: "", portfolio: "Ushr, GeoDigital, IPKeys", ces: "CES 2026 Attendee", priority: 2, notes: "Promoted to Partner December 2022."},
+        {id: 73, firstName: "Ellie", lastName: "Kim", company: "Innventure", title: "Senior Director", type: "Venture Capital", stage: ["Growth", "Late Stage"], focus: "Company Building, Commercialization, MNC Spin-outs", location: "Orlando / Global", email: "", linkedin: "https://linkedin.com/in/elliebyeolkim", twitter: "", portfolio: "PureCycle, AeroFlexx", ces: "CES 2026 Attendee", priority: 2, notes: "LinkedIn corrected."},
+        {id: 74, firstName: "Stephanie", lastName: "Son", company: "VentureNest Partners", title: "Founder & CEO", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Cross-Border (Korea/US), Deep Tech", location: "Silicon Valley", email: "stephanie@venturenestpartners.com", linkedin: "https://linkedin.com/in/stephanieson", twitter: "", portfolio: "Global Market Access Program", ces: "CES 2026 Attendee", priority: 2, notes: "Korea-US cross-border investing."},
+        {id: 75, firstName: "Ryosuke", lastName: "Kojima", company: "Pegasus Tech Ventures", title: "Senior Director, Business Development", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "AI, Robotics, IoT, Healthtech", location: "Silicon Valley", email: "rkojima@pegasustechventures.com", linkedin: "https://linkedin.com/in/ryosuke-kojima-10591168", twitter: "", portfolio: "SpaceX, Airbnb, 23andMe (Firm)", ces: "CES 2026 Attendee", priority: 2, notes: "Title corrected."},
+        {id: 76, firstName: "SK", lastName: "Kim", company: "Daiwa Capital Markets", title: "Executive Director & Senior Analyst", type: "Institutional Investor", stage: ["Growth", "Public"], focus: "Semiconductors, Tech Hardware", location: "Seoul / Tokyo", email: "", linkedin: "", twitter: "", portfolio: "Tech Sector Public Equities", ces: "CES 2026 Attendee", priority: 2, notes: "CNBC and Bloomberg semiconductor analyst."},
+        {id: 77, firstName: "Jiaze (Jason)", lastName: "Lu", company: "Later Capital", title: "Partner", type: "Venture Capital", stage: ["Pre-Seed", "Seed"], focus: "Long-term Innovation, Ethics, Impact", location: "Los Angeles", email: "", linkedin: "https://www.linkedin.com/in/jiaze", twitter: "", portfolio: "Impact-focused Tech", ces: "CES 2026 Attendee", priority: 2, notes: "15+ years VC experience."},
+        {id: 78, firstName: "Eli", lastName: "Zhu", company: "Neo Bravo Capital", title: "Co-Founder & General Partner", type: "Venture Capital", stage: ["Seed"], focus: "AI, Blockchain, Space Tech", location: "Newport Beach / Canada", email: "", linkedin: "https://linkedin.com/in/eli-zhu", twitter: "", portfolio: "Clik (Proptech), Tmind (Health AI)", ces: "CES 2026 Attendee", priority: 2, notes: "Title corrected."},
+        {id: 79, firstName: "Moe", lastName: "Licea", company: "Pegasus Tech Ventures", title: "VP of Strategic Sales", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "Corporate Partnerships, Startup World Cup", location: "Silicon Valley", email: "moe@pegasusventures.com", linkedin: "https://linkedin.com/in/moe-licea-3740401a4", twitter: "", portfolio: "Pegasus Global Portfolio", ces: "CES 2026 Attendee", priority: 2, notes: "Title corrected."},
+        {id: 80, firstName: "John", lastName: "Lim", company: "Meet Ventures (Ex-Pegasus)", title: "Partner & Chief Strategy Officer", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "AI, Deep Tech, Cross-border", location: "Silicon Valley", email: "", linkedin: "https://www.linkedin.com/in/johnlimjd", twitter: "", portfolio: "Pegasus Global Portfolio", ces: "CES 2026 Attendee", priority: 2, notes: "Per Pegasus website."},
+        {id: 81, firstName: "Colin", lastName: "Scott", company: "Innventure", title: "SVP, DownSelect & New Company Development", type: "Venture Capital", stage: ["Growth"], focus: "MNC Spin-outs, Commercialization", location: "Orlando / Global", email: "", linkedin: "https://linkedin.com/in/colinscott", twitter: "", portfolio: "PureCycle, AeroFlexx", ces: "CES 2026 Attendee", priority: 2, notes: "Leads technology evaluation at Innventure."},
+        {id: 82, firstName: "Victoria", lastName: "Hart", company: "Pinnacle View Capital", title: "Portfolio Manager / Founder", type: "Institutional Investor", stage: ["Growth", "Late Stage"], focus: "Public Markets, Hedge Fund Strategies", location: "New York", email: "", linkedin: "https://linkedin.com/in/victoria-hart-2a72a5", twitter: "", portfolio: "Public Equities, Long/Short", ces: "CES 2026 Attendee", priority: 2, notes: "LinkedIn corrected."},
+        {id: 83, firstName: "Bob", lastName: "Struble", company: "Blu Venture Investors", title: "Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Cyber, Digital Health, Enterprise SaaS", location: "Washington DC / Baltimore", email: "bstruble@bluventureinvestors.com", linkedin: "https://www.linkedin.com/in/bobstruble", twitter: "", portfolio: "HAAS Alert, MixMode, Asylon, Suvie", ces: "CTA Board of Industry Leaders", priority: 2, notes: ""},
+        {id: 84, firstName: "Avery", lastName: "Lu", company: "Aventurine Capital Group", title: "Partner & Head of Investments", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Deep Tech, Hardware, IP-driven Startups", location: "Silicon Valley", email: "avery.lu@aventurine.com", linkedin: "https://www.linkedin.com/in/averylu", twitter: "", portfolio: "Palo Alto Scientific, ActionSpot", ces: "Judge: Silicon Valley Funding Summit", priority: 2, notes: ""},
+        {id: 85, firstName: "Justin", lastName: "Jackson", company: "Pegasus Tech Ventures", title: "Partner", type: "Venture Capital", stage: ["Seed", "Series A", "Growth"], focus: "AI, Energy Transition, Global Innovation", location: "Silicon Valley", email: "justin@pegasusventures.com", linkedin: "https://www.linkedin.com/in/justinryanjackson", twitter: "", portfolio: "Startup World Cup Global Ecosystem", ces: "Startup World Cup @ CES 2026", priority: 2, notes: ""},
+        {id: 86, firstName: "Claudio", lastName: "Martinez", company: "Xperi (CVC)", title: "VP, Global Automotive Business Development", type: "Corporate VC", stage: ["Growth", "Strategic"], focus: "Automotive Tech, In-Cabin Sensing, Audio", location: "Los Angeles", email: "claudio.martinez@xperi.com", linkedin: "https://www.linkedin.com/in/claudio-martinez", twitter: "", portfolio: "DTS, HD Radio, IMAX Enhanced ecosystem", ces: "CTA Board of Industry Leaders", priority: 2, notes: ""},
+        {id: 87, firstName: "Samira", lastName: "Naraghi", company: "Enovix", title: "Chief Business Officer", type: "Corporate VC", stage: ["Growth"], focus: "Battery Tech, Mobility, Wearables, AI Hardware", location: "Silicon Valley", email: "snaraghi@enovix.com", linkedin: "https://www.linkedin.com/in/samiranaraghi", twitter: "", portfolio: "Enovix Strategic Partnerships", ces: "CTA Board of Industry Leaders", priority: 2, notes: "Strategic leader at $2B+ public battery co."},
+        {id: 88, firstName: "Manish", lastName: "Gupta", company: "Nagarro / Marl Accelerator", title: "EVP & Angel Investor", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "B2B SaaS, HealthTech, Digital Engineering", location: "Silicon Valley / Global", email: "", linkedin: "https://www.linkedin.com/in/manish-gupta-nagarro", twitter: "", portfolio: "Bellatrix Aerospace, Bold Care, Marl 5G Accelerator", ces: "CES 2026 Attendee / Mentor", priority: 2, notes: ""},
+        {id: 89, firstName: "Gary", lastName: "Shapiro", company: "Consumer Technology Association (CTA)", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Policy, Innovation", location: "Washington DC", email: "gshapiro@cta.tech", linkedin: "https://www.linkedin.com/in/garyshapiro", twitter: "", portfolio: "CTA Fund, Active Angel", ces: "Host of CES 2026", priority: 1, notes: ""}
+    ];
+
+    // --- 2. EVENT DATA (With Updated IDs) ---
+    const events = [
+        {
+            title: "CES Unveiled Las Vegas",
+            date: "Jan 4",
+            time: "5:00 PM - 8:30 PM",
+            location: "Mandalay Bay",
+            type: "Party",
+            desc: "The official media event of CES. Startups and big brands unveil their latest tech to global media before the show floor opens.",
+            attendees: [42, 46, 11]
+        },
+        {
+            title: "Silicon Valley Funding Summit",
+            date: "Jan 5",
+            time: "9:00 AM - 5:00 PM",
+            location: "Tuscany Suites",
+            type: "Competition",
+            desc: "A major pitch event connecting startups with angel investors and VCs. A key destination for deal-flow.",
+            attendees: [49, 50, 51, 54, 55, 57, 59, 60, 10, 84]
+        },
+        {
+            title: "Fortune Brainstorm Tech Dinner",
+            date: "Jan 5",
+            time: "6:00 PM - 9:00 PM",
+            location: "KYU Las Vegas, Fontainebleau",
+            type: "Party",
+            desc: "An exclusive gathering of Fortune 500 executives and top-tier VCs discussing the year ahead in tech.",
+            attendees: [48, 2]
+        },
+        {
+            title: "CES Keynote: All-In Interview",
+            date: "Jan 6",
+            time: "2:00 PM",
+            location: "Venetian Palazzo Ballroom",
+            type: "Keynote",
+            desc: "A special live conversation on the future of tech investing with the hosts of the All-In Podcast and special guests.",
+            attendees: [1, 2, 48]
+        },
+        {
+            title: "ShowStoppers @ CES",
+            date: "Jan 6",
+            time: "6:00 PM - 10:00 PM",
+            location: "Bellagio Grand Ballroom",
+            type: "Party",
+            desc: "The premier press and business reception where startups demo directly to hundreds of journalists and investors.",
+            attendees: [4, 7, 38]
+        },
+        {
+            title: "Betting on Bots: The Investment Case for Robotics",
+            date: "Jan 8",
+            time: "11:00 AM - 11:40 AM",
+            location: "LVCC, North Hall",
+            type: "Panel",
+            desc: "Top VCs discuss why robotics is the next major investment frontier beyond software.",
+            attendees: [64, 61, 7, 3]
+        },
+        {
+            title: "Vehicle Tech Investment Trends",
+            date: "Jan 9",
+            time: "10:00 AM - 10:40 AM",
+            location: "Westgate",
+            type: "Panel",
+            desc: "Experts from NVIDIA and top funds discuss the future of mobility investments.",
+            attendees: [65, 67]
+        },
+        {
+            title: "Investing in the Energy Transition",
+            date: "Jan 9",
+            time: "9:00 AM - 9:40 AM",
+            location: "LVCC, North Hall",
+            type: "Panel",
+            desc: "Deep dive into cleantech and sustainable energy investments.",
+            attendees: [68, 5]
+        },
+        {
+            title: "Getting to the First Million",
+            date: "Jan 8",
+            time: "11:00 AM",
+            location: "Venetian Expo",
+            type: "Panel",
+            desc: "Larry Li and other seed investors share secrets on raising your first major round.",
+            attendees: [70, 21]
+        },
+        {
+            title: "CTA Foundation Pitch Competition",
+            date: "Jan 8",
+            time: "2:00 PM - 4:00 PM",
+            location: "Venetian Expo, Hall G",
+            type: "Competition",
+            desc: "Startups pitch for non-dilutive funding and prizes, judged by leading angels.",
+            attendees: [69, 25]
+        },
+        {
+            title: "Startup World Cup Finals @ CES",
+            date: "Jan 7",
+            time: "9:00 AM - 5:00 PM",
+            location: "Venetian Expo",
+            type: "Competition",
+            desc: "Global finals of the Startup World Cup with $1M grand prize. Hosted by Pegasus Tech Ventures.",
+            attendees: [38, 75, 79, 80, 85]
+        }
+    ];
+
+    // --- 3. APP LOGIC (GLOBAL) ---
+    var displayedInvestors = [...investors];
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        // Find button by text or specific class since onclick selector is fragile
+        const tabs = document.querySelectorAll('.tab-btn');
+        if(tabId === 'investors') tabs[0].classList.add('active');
+        if(tabId === 'ai') tabs[1].classList.add('active');
+        if(tabId === 'events') tabs[2].classList.add('active');
+
+        document.getElementById('investorsView').style.display = 'none';
+        document.getElementById('eventsView').style.display = 'none';
+        document.getElementById('aiView').style.display = 'none';
+
+        if (tabId === 'investors') {
+            document.getElementById('investorsView').style.display = 'block';
+            displayCards();
+        } else if (tabId === 'ai') {
+            document.getElementById('aiView').style.display = 'block';
+        } else {
+            document.getElementById('eventsView').style.display = 'block';
+            renderEvents();
+        }
+    }
+
+    function filterInvestors() {
+        const search = document.getElementById('search').value.toLowerCase();
+        const type = document.getElementById('type').value;
+        const focus = document.getElementById('focus').value.toLowerCase();
+
+        displayedInvestors = investors.filter(inv => {
+            const matchesSearch = !search ||
+                inv.firstName.toLowerCase().includes(search) ||
+                inv.lastName.toLowerCase().includes(search) ||
+                inv.company.toLowerCase().includes(search);
+            const matchesType = !type || inv.type === type;
+            const matchesFocus = !focus || inv.focus.toLowerCase().includes(focus);
+            return matchesSearch && matchesType && matchesFocus;
+        });
+
+        document.getElementById('resultCount').textContent = displayedInvestors.length;
+        displayCards();
+    }
+
+    function resetFilters() {
+        document.getElementById('search').value = '';
+        document.getElementById('type').value = '';
+        document.getElementById('focus').value = '';
+        displayedInvestors = [...investors];
+        document.getElementById('resultCount').textContent = investors.length;
+        displayCards();
+    }
+
+    function displayCards() {
+        const grid = document.getElementById('investorGrid');
+        if (!grid) return;
+
+        if (displayedInvestors.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px;"></i>
+                <h3>No investors found</h3>
+                <p>Try adjusting your search filters</p>
+            </div>`;
+            return;
+        }
+
+        grid.innerHTML = displayedInvestors.map(inv => `
+            <div class="card">
+                <div class="card-header">
+                    ${inv.priority === 1 ? '<div class="priority-badge">PRIORITY</div>' : ''}
+                    <div class="card-name">${inv.firstName} ${inv.lastName}</div>
+                    <div class="card-company">${inv.company}</div>
+                    <div class="card-title">${inv.title}</div>
+                </div>
+                <div class="card-body">
+                    <div class="info-block">
+                        <div class="info-label">Type | Location</div>
+                        <div class="info-value">${inv.type} | ${inv.location}</div>
+                    </div>
+                     <div class="info-block">
+                        <div class="info-label">Focus Areas</div>
+                        <div class="tags">
+                            ${(inv.focus || '').split(',').slice(0, 3).map(tag => `<span class="tag">${tag.trim()}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <div class="highlight-label">CES 2026 Status</div>
+                        <div class="highlight-text">${inv.ces}</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-small btn-details" onclick="openModal(${inv.id})">Details</button>
+                    <a href="${inv.linkedin ? inv.linkedin : '#'}" target="_blank" class="btn-small btn-linkedin ${!inv.linkedin ? 'disabled' : ''}">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderEvents() {
+        const grid = document.getElementById('eventsGrid');
+        if (!grid) return;
+        
+        grid.innerHTML = events.map(evt => {
+            const attendeeHTML = (evt.attendees || []).map(id => {
+                const inv = investors.find(i => i.id === id);
+                if (!inv) return '';
+                return `<span class="attendee-chip" onclick="openModal(${inv.id})">
+                    <span class="attendee-icon"><i class="fas fa-user"></i></span>
+                    ${inv.firstName} ${inv.lastName}
+                </span>`;
+            }).join('');
+
+            const typeClass = evt.type === 'Keynote' ? 'type-keynote' :
+                              evt.type === 'Party' ? 'type-party' :
+                              evt.type === 'Competition' ? 'type-competition' : 'type-panel';
+
+            return `
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-date-badge">
+                        <div class="event-month">JAN</div>
+                        <div class="event-day">${evt.date.split(' ')[1]}</div>
+                    </div>
+                    <div class="event-details-header">
+                        <span class="event-type ${typeClass}">${evt.type}</span>
+                        <div class="event-title">${evt.title}</div>
+                    </div>
+                </div>
+                <div class="event-body">
+                    <div class="event-meta">
+                        <div class="meta-item"><i class="far fa-clock"></i> ${evt.time}</div>
+                        <div class="meta-item"><i class="fas fa-map-marker-alt"></i> ${evt.location}</div>
+                    </div>
+                    <p class="event-desc">${evt.desc}</p>
+                    <div class="attendees-section">
+                        <div class="attendees-label">Featured Investors</div>
+                        <div class="attendee-chips">
+                            ${attendeeHTML}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // --- EXPORT & MODAL FUNCTIONS ---
+    
+    window.exportCSV = function() {
+        const headers = ["First Name", "Last Name", "Company", "Title", "Type", "Focus", "Location", "Email", "LinkedIn", "Notes"];
+        const csvContent = "data:text/csv;charset=utf-8," 
+            + headers.join(",") + "\n" 
+            + displayedInvestors.map(e => {
+                return `"${e.firstName}","${e.lastName}","${e.company}","${e.title}","${e.type}","${e.focus.replace(/"/g, '""')}","${e.location}","${e.email || ''}","${e.linkedin || ''}","${(e.notes || '').replace(/"/g, '""')}"`;
+            }).join("\n");
+            
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "ces_2026_investors_verified.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    window.openModal = function(id) {
+        const inv = investors.find(i => i.id === id);
+        if (!inv) return;
+
+        document.getElementById('modalName').textContent = `${inv.firstName} ${inv.lastName}`;
+        document.getElementById('modalCompany').textContent = inv.company;
+        
+        const modalBody = document.getElementById('modalBody');
+        
+        let contactHTML = '';
+        if (inv.email) contactHTML += `<p><strong>Email:</strong> <a href="mailto:${inv.email}">${inv.email}</a></p>`;
+        if (inv.twitter) contactHTML += `<p><strong>Twitter:</strong> ${inv.twitter}</p>`;
+        
+        let linkedinHTML = inv.linkedin 
+            ? `<div class="linkedin-status verified"><i class="fab fa-linkedin"></i> <a href="${inv.linkedin}" target="_blank">View Profile</a></div>`
+            : `<div class="linkedin-status"><i class="fab fa-linkedin"></i> Profile not available</div>`;
+
+        modalBody.innerHTML = `
+            <div class="modal-section">
+                <h3>Investor Details</h3>
+                <p><strong>Title:</strong> ${inv.title}</p>
+                <p><strong>Location:</strong> ${inv.location}</p>
+                <p><strong>Type:</strong> ${inv.type}</p>
+                ${inv.notes ? `<p style="font-size: 12px; color: #666; font-style: italic;"><strong>Notes:</strong> ${inv.notes}</p>` : ''}
+                ${contactHTML}
+                ${linkedinHTML}
+            </div>
+            <div class="modal-section">
+                <h3>Investment Focus</h3>
+                <div class="tags">
+                    ${(inv.focus || '').split(',').map(tag => `<span class="tag focus">${tag.trim()}</span>`).join('')}
+                </div>
+                <p style="margin-top: 10px; font-size: 13px;"><strong>Stages:</strong> ${(inv.stage || []).join(', ')}</p>
+            </div>
+            <div class="modal-section">
+                <h3>Portfolio Highlights</h3>
+                <div style="margin-top: 5px;">
+                    ${(inv.portfolio || '').split(',').map(p => `<span class="portfolio-badge" style="display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; margin: 2px;"><i class="fas fa-check-circle"></i> ${p.trim()}</span>`).join('')}
+                </div>
+            </div>
+            <div class="modal-section">
+                <h3>CES 2026 Activity</h3>
+                <p>${inv.ces}</p>
+            </div>
+            
+            <div class="modal-section" style="margin-top: 30px; border-top: 1px dashed #ddd; padding-top: 20px;">
+                <h3><i class="fas fa-magic ai-sparkle"></i> AI Cold Email Generator</h3>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">The AI will analyze recent news and CES activity to draft a perfect cold email.</p>
+                <textarea id="emailPitch" class="ai-textarea" placeholder="e.g. My startup, DroneX, uses AI for precision agriculture..."></textarea>
+                <button onclick="generateEnhancedEmail(${inv.id})" class="btn btn-ai" style="margin-top: 10px; width: 100%;">Generate Personalized Email</button>
+                <div id="emailResult" class="ai-email-box">
+                    <button class="copy-btn" onclick="copyEmail()"><i class="far fa-copy"></i> Copy</button>
+                    <div id="emailContent" class="ai-email-content"></div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('detailModal').style.display = 'block';
+    }
+
+    window.closeModal = function() {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('detailModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // --- 4. AI BACKEND CONNECTION ---
+
+    async function callGemini(promptText) {
+        // Changed to 'proxy' to match your latest backend filename
+        const url = "/.netlify/functions/proxy";
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }]
+                })
+            });
+
+            // Extract the error text if not OK
+            if (!response.ok) {
+                const errorText = await response.text();
+                return { error: `Server Error ${response.status}: ${errorText}` };
+            }
+
+            const data = await response.json();
+            
+            if (data.error) {
+                return { error: `API Error: ${data.error}` };
+            }
+
+            if (data.candidates && data.candidates.length > 0 && data.candidates[0].content) {
+                 return { text: data.candidates[0].content.parts[0].text };
+            } else {
+                return { error: "Empty response from AI." };
+            }
+
+        } catch (error) {
+            return { error: `Connection Error: ${error.message}` };
+        }
+    }
+
+    async function runMatchmaker() {
+        const userDesc = document.getElementById('startupDescription').value;
+        if (!userDesc) return alert("Please describe your startup first.");
+
+        const loader = document.getElementById('aiLoading');
+        const resultsDiv = document.getElementById('aiResults');
+        
+        loader.style.display = 'block';
+        resultsDiv.innerHTML = '';
+
+        const simplifiedList = investors.map(inv => ({
+            id: inv.id, name: `${inv.firstName} ${inv.lastName}`, firm: inv.company, focus: inv.focus, ces: inv.ces
+        }));
+
+        const prompt = `Match this startup description: "${userDesc}" with the top 5 investors from this list: ${JSON.stringify(simplifiedList)}. Return ONLY a JSON array with [{id, reason}].`;
+
+        const result = await callGemini(prompt);
+        loader.style.display = 'none';
+
+        if (result.error) {
+            resultsDiv.innerHTML = `<div style="color:#d63031; padding:20px; background:#ffecec; border-radius:8px; text-align:center;">
+                <i class="fas fa-exclamation-triangle"></i><br>
+                <strong>${result.error}</strong>
+            </div>`;
+            return;
+        }
+
+        try {
+            const text = result.text;
+            const jsonStart = text.indexOf('[');
+            const jsonEnd = text.lastIndexOf(']') + 1;
+            const matches = JSON.parse(text.substring(jsonStart, jsonEnd));
+            
+            resultsDiv.innerHTML = matches.map(m => {
+                const inv = investors.find(i => i.id === m.id);
+                if(!inv) return '';
+                return `<div class="card" style="border: 2px solid #667eea;">
+                    <div class="card-header"><div class="card-name">${inv.firstName} ${inv.lastName}</div><div class="priority-badge" style="background:#667eea;">MATCH</div></div>
+                    <div class="card-body"><p style="font-size:13px; background:#f0f2ff; padding:10px; border-radius:6px; color:#333;">${m.reason}</p></div>
+                    <div class="card-footer"><button class="btn-small btn-details" onclick="openModal(${inv.id})">Details</button></div>
+                </div>`;
+            }).join('');
+        } catch(e) {
+            resultsDiv.innerHTML = '<p style="color:white;">Error parsing AI response.</p>';
+        }
+    }
+
+    async function generateEnhancedEmail(id) {
+        const inv = investors.find(i => i.id === id);
+        const pitch = document.getElementById('emailPitch').value;
+        const contentBox = document.getElementById('emailContent');
+        const resultBox = document.getElementById('emailResult');
+        
+        if (!pitch) return alert("Please enter your pitch.");
+        
+        resultBox.style.display = 'block';
+        contentBox.innerHTML = "Generating...";
+        
+        const prompt = `Write a cold email to ${inv.firstName} ${inv.lastName} (${inv.company}). 
+        They focus on: ${inv.focus}. They are at CES doing: ${inv.ces}.
+        My pitch: ${pitch}. 
+        Keep it under 100 words. Mention CES immediately.`;
+
+        const result = await callGemini(prompt);
+        
+        if (result.error) {
+            contentBox.innerHTML = `<span style="color:red; font-weight:bold;">${result.error}</span>`;
+        } else {
+            contentBox.textContent = result.text;
+        }
+    }
+
+    // --- 5. INITIALIZATION (RUNS IMMEDIATELY) ---
+    function init() {
+        console.log("App Initializing...");
+        document.getElementById('totalCount').textContent = investors.length;
+        document.getElementById('badgeCount').textContent = investors.length;
+        displayCards();
+    }
+
+    // Run now
+    init();
+
+    // Re-run on load just to be safe
+    window.addEventListener('DOMContentLoaded', init);
+    
+    </script>
+</body>
+</html>
