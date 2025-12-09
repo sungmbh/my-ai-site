@@ -10,10 +10,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #2182A5; --primary-dark: #1a6685; --light: #F5F5F5; --dark: #1A1A2E; --gray: #6C757D; --accent: #FF6B6B; --app-color: #2D3436; --linkedin: #0077b5; --ai-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --verified: #27ae60; --corrected: #f39c12; --error: #e74c3c; --unverified: #95a5a6; }
         
-        /* Body is Dark with White Text */
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 100%); color: #ffffff; line-height: 1.6; padding-bottom: 60px; }
         
-        /* Header */
         header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 20px 0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); position: sticky; top: 0; z-index: 100; }
         .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .logo-section { display: flex; align-items: center; gap: 15px; padding-right: 20px; border-right: 2px solid rgba(255, 255, 255, 0.2); }
@@ -37,7 +35,7 @@
         .tab-btn.ai-tab.active { background: var(--ai-gradient); color: white; }
         .ai-sparkle { color: #FFD700; }
 
-        /* Filters Box - White Background, Dark Text */
+        /* Filters Box */
         .filters-box { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); color: var(--dark); }
         .filters-box h2 { font-size: 18px; margin-bottom: 20px; color: var(--dark); display: flex; align-items: center; gap: 10px; }
         .filter-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
@@ -59,7 +57,7 @@
         .results-count { font-size: 16px; color: white; font-weight: 600; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         
-        /* Investor Card - White Background, Dark Text */
+        /* Investor Card */
         .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s; color: var(--dark); }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .card-header { background: linear-gradient(135deg, var(--primary) 0%, #50a7d1 100%); padding: 20px; color: white; position: relative; }
@@ -110,7 +108,7 @@
         .attendee-chip:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .attendee-icon { font-size: 10px; color: var(--primary); }
 
-        /* Modal - Dark Text inside */
+        /* Modal */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); overflow-y: auto; }
         .modal-content { background: white; margin: 5% auto; width: 90%; max-width: 700px; border-radius: 12px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); color: var(--dark); }
         .modal-header { background: linear-gradient(135deg, var(--primary) 0%, #50a7d1 100%); padding: 25px; color: white; display: flex; justify-content: space-between; border-radius: 12px 12px 0 0; }
@@ -126,7 +124,7 @@
         .ai-input-group label { display: block; font-weight: 700; margin-bottom: 10px; color: var(--dark); font-size: 16px; }
         .ai-textarea { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 15px; min-height: 100px; resize: vertical; transition: border-color 0.3s; color: var(--dark); }
         .ai-textarea:focus { border-color: #667eea; outline: none; }
-        .ai-loading { display: none; text-align: center; padding: 20px; color: #fff; } /* Fixed loading text color */
+        .ai-loading { display: none; text-align: center; padding: 20px; color: #fff; }
         .ai-loading i { animation: spin 1s linear infinite; margin-right: 10px; }
         .ai-email-box { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 15px; margin-top: 15px; display: none; position: relative; color: var(--dark); }
         .ai-email-content { white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #333; line-height: 1.6; }
@@ -245,9 +243,9 @@
     </div>
 
     <script>
-    // --- 1. DATASETS (VERIFIED DEC 2025) ---
+    // --- 1. DATASETS (FINAL CONFIRMED LIST) ---
     const investors = [
-        {id: 1, firstName: "Gary", lastName: "Shapiro", company: "Consumer Technology Association (CTA)", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Policy, Innovation", location: "Washington DC", email: "gshapiro@cta.tech", linkedin: "", twitter: "@GaryShapiro", portfolio: "CTA Fund, Active Angel", ces: "Host of CES 2026", priority: 1, notes: "CEO of CES. Email verified. LinkedIn removed to avoid realtor confusion."},
+        {id: 1, firstName: "Gary", lastName: "Shapiro", company: "Consumer Technology Association (CTA)", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Policy, Innovation", location: "Washington DC", email: "gshapiro@cta.tech", linkedin: "https://www.linkedin.com/in/gary-shapiro/", twitter: "@GaryShapiro", portfolio: "CTA Fund, Active Angel", ces: "Host of CES 2026", priority: 1, notes: "CEO of CES."},
         {id: 2, firstName: "Hemant", lastName: "Taneja", company: "General Catalyst", title: "CEO", type: "Venture Capital", stage: ["Series A", "Series B", "Growth"], focus: "Enterprise, AI, Climate Tech, Health Tech", location: "Boston", email: "hemant@generalcatalyst.com", linkedin: "https://linkedin.com/in/hemanttaneja", twitter: "@htaneja", portfolio: "Stripe, Snap, Airbnb, Gusto, Livongo", ces: "CES 2026 Keynote Speaker - All-In Interview", priority: 1, notes: "$40B+ AUM. CES 2026 keynote speaker."},
         {id: 3, firstName: "Modar", lastName: "Alaoui", company: "ALM Ventures", title: "Founder & General Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Humanoid Robotics, Embodied AI, Spatial AI", location: "Silicon Valley", email: "", linkedin: "https://linkedin.com/in/modaralaoui", twitter: "", portfolio: "Humanoids Summit, Eyeris (acquired by Amazon)", ces: "CES 2026 Robotics Track", priority: 1, notes: "Hosting Humanoids Summit (Dec 2025). Active in CES Robotics track."},
         {id: 4, firstName: "Peter", lastName: "Bodenheimer", company: "PeakBridge VC", title: "Venture Partner", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Agri-Food Tech, Sustainable Food Systems", location: "San Francisco", email: "", linkedin: "https://linkedin.com/in/pbodenheimer", twitter: "", portfolio: "Food innovation startups", ces: "ShowStoppers @ CES 2026", priority: 2, notes: "Focus on food innovation and sustainability."},
@@ -335,10 +333,19 @@
         {id: 86, firstName: "Claudio", lastName: "Martinez", company: "Xperi (CVC)", title: "VP, Global Automotive Business Development", type: "Corporate VC", stage: ["Growth", "Strategic"], focus: "Automotive Tech, In-Cabin Sensing, Audio", location: "Los Angeles", email: "claudio.martinez@xperi.com", linkedin: "https://www.linkedin.com/in/claudio-martinez", twitter: "", portfolio: "DTS, HD Radio, IMAX Enhanced ecosystem", ces: "CTA Board of Industry Leaders", priority: 2, notes: ""},
         {id: 87, firstName: "Samira", lastName: "Naraghi", company: "Enovix", title: "Chief Business Officer", type: "Corporate VC", stage: ["Growth"], focus: "Battery Tech, Mobility, Wearables, AI Hardware", location: "Silicon Valley", email: "snaraghi@enovix.com", linkedin: "https://www.linkedin.com/in/samiranaraghi", twitter: "", portfolio: "Enovix Strategic Partnerships", ces: "CTA Board of Industry Leaders", priority: 2, notes: "Strategic leader at $2B+ public battery co."},
         {id: 88, firstName: "Manish", lastName: "Gupta", company: "Nagarro / Marl Accelerator", title: "EVP & Angel Investor", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "B2B SaaS, HealthTech, Digital Engineering", location: "Silicon Valley / Global", email: "", linkedin: "https://www.linkedin.com/in/manish-gupta-nagarro", twitter: "", portfolio: "Bellatrix Aerospace, Bold Care, Marl 5G Accelerator", ces: "CES 2026 Attendee / Mentor", priority: 2, notes: ""},
-        {id: 89, firstName: "Gary", lastName: "Shapiro", company: "Consumer Technology Association (CTA)", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Consumer Tech, Policy, Innovation", location: "Washington DC", email: "gshapiro@cta.tech", linkedin: "https://www.linkedin.com/in/gary-shapiro/", twitter: "@GaryShapiro", portfolio: "CTA Fund, Active Angel", ces: "Host of CES 2026", priority: 1, notes: ""}
+        {id: 90, firstName: "Tiffany", lastName: "Yu", company: "7wire Ventures", title: "Principal", type: "Venture Capital", stage: ["Series A", "Series B"], focus: "Digital Health, Consumer Health, AgeTech", location: "Chicago", email: "", linkedin: "https://linkedin.com/in/tiffany-yu-04936310", twitter: "", portfolio: "7wire Portfolio", ces: "Speaker: The Upside of Investing in Aging", priority: 1, notes: "Speaking at CES AgeTech track."},
+        {id: 91, firstName: "Daniel", lastName: "Kaplan", company: "Equitage Ventures", title: "Managing Director", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Longevity, HealthTech", location: "Chicago", email: "", linkedin: "https://linkedin.com/in/daniel-kaplan-33b6641", twitter: "", portfolio: "Equitage Portfolio", ces: "Speaker: The Upside of Investing in Aging", priority: 1, notes: "Speaking at CES AgeTech track."},
+        {id: 92, firstName: "Lyne", lastName: "Landry", company: "AgeTech Capital", title: "Founding & Managing Partner", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "AgeTech, Silver Economy", location: "Montreal", email: "", linkedin: "https://linkedin.com/in/lynelandry", twitter: "", portfolio: "AgeTech Capital Portfolio", ces: "Moderator: The Upside of Investing in Aging", priority: 1, notes: "Moderating investment panel."},
+        {id: 93, firstName: "Amelia", lastName: "Hay", company: "AgeTech Collaborative (AARP)", title: "VP, Startup Programming & Investments", type: "Corporate VC", stage: ["Seed", "Series A"], focus: "AgeTech, HealthTech", location: "Washington DC", email: "", linkedin: "https://linkedin.com/in/ameliahay", twitter: "", portfolio: "AARP Innovation Labs", ces: "Moderator: Robots on Staff for Healthcare", priority: 1, notes: "Leads AARP's startup investments."},
+        {id: 94, firstName: "Sally Ann", lastName: "Frank", company: "Microsoft for Startups", title: "Global Lead, Health & Life Sciences", type: "Corporate VC", stage: ["Seed", "Series A"], focus: "Healthcare AI, Life Sciences", location: "Seattle", email: "", linkedin: "https://linkedin.com/in/sallyannfrank", twitter: "", portfolio: "Microsoft Startup Ecosystem", ces: "Moderator: Innovations Transforming Women's Health", priority: 1, notes: "Microsoft for Startups leader."},
+        {id: 95, firstName: "James", lastName: "Mayer", company: "CABHI", title: "Chief Operating Officer", type: "Institutional Investor", stage: ["Seed", "Series A"], focus: "Brain Health, Aging, Deep Tech", location: "Toronto", email: "", linkedin: "https://linkedin.com/in/jamesmayer", twitter: "", portfolio: "CABHI Portfolio", ces: "Moderator: Bionic Footwear Panel", priority: 2, notes: "CABHI provides funding and investment."},
+        {id: 96, firstName: "Mark", lastName: "Cuban", company: "Mark Cuban Companies", title: "Owner", type: "Angel Investor", stage: ["Seed", "Series A", "Growth"], focus: "Generalist, AI, Consumer", location: "Dallas", email: "mcuban@gmail.com", linkedin: "https://linkedin.com/in/mark-cuban-06a07cd5", twitter: "@mcuban", portfolio: "Shark Tank Portfolio", ces: "Judge: Shark Tank Live Pitch Competition", priority: 1, notes: "Confirmed Judge for CES 2026 Shark Tank."},
+        {id: 97, firstName: "Kevin", lastName: "O'Leary", company: "O'Leary Ventures", title: "Chairman", type: "Venture Capital", stage: ["Seed", "Series A"], focus: "Fintech, Consumer Goods", location: "Toronto / Miami", email: "", linkedin: "https://linkedin.com/in/kevinolearytv", twitter: "@kevinolearytv", portfolio: "Shark Tank Portfolio", ces: "Judge: Shark Tank Live Pitch Competition", priority: 1, notes: "Confirmed Judge for CES 2026 Shark Tank."},
+        {id: 98, firstName: "Lori", lastName: "Greiner", company: "For Your Ease Only", title: "President", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Retail, Consumer Products", location: "Chicago", email: "", linkedin: "https://linkedin.com/in/lorigreiner", twitter: "@LoriGreiner", portfolio: "Shark Tank Portfolio", ces: "Judge: Shark Tank Live Pitch Competition", priority: 1, notes: "Confirmed Judge for CES 2026 Shark Tank."},
+        {id: 99, firstName: "Daymond", lastName: "John", company: "The Shark Group", title: "CEO", type: "Angel Investor", stage: ["Seed", "Series A"], focus: "Branding, Fashion Tech, Consumer", location: "New York", email: "", linkedin: "https://linkedin.com/in/daymondjohn", twitter: "@TheSharkDaymond", portfolio: "Shark Tank Portfolio", ces: "Judge: Shark Tank Live Pitch Competition", priority: 1, notes: "Confirmed Judge for CES 2026 Shark Tank."}
     ];
 
-    // --- 2. EVENT DATA ---
+    // --- 2. EVENT DATA (UPDATED WITH TAIWAN EVENTS) ---
     const events = [
         {
             title: "CES Unveiled Las Vegas",
@@ -348,6 +355,24 @@
             type: "Party",
             desc: "The official media event of CES. Startups and big brands unveil their latest tech to global media before the show floor opens.",
             attendees: [42, 46, 11]
+        },
+        {
+            title: "TTA Pavilion Opening Ceremony",
+            date: "Jan 6",
+            time: "10:00 AM - 11:00 AM",
+            location: "Venetian Expo, Hall G (Eureka Park)",
+            type: "Keynote",
+            desc: "Official opening of the Taiwan Tech Arena (TTA) pavilion, showcasing 90+ top Taiwanese startups. A key networking hub.",
+            attendees: []
+        },
+        {
+            title: "TTA Happy Hour & Networking",
+            date: "Jan 7",
+            time: "4:00 PM - 5:30 PM",
+            location: "Venetian Expo, Hall G (Taiwan Tech Arena)",
+            type: "Party",
+            desc: "Meet international investors and partners at the Taiwan Tech Arena. Hosted by TTA and Ministry of Science and Technology.",
+            attendees: []
         },
         {
             title: "Silicon Valley Funding Summit",
@@ -368,6 +393,15 @@
             attendees: [48, 2]
         },
         {
+            title: "AgeTech Collaborative Networking Reception",
+            date: "Jan 7",
+            time: "5:00 PM - 7:00 PM",
+            location: "Venetian Expo (AgeTech Booth 2818)",
+            type: "Party",
+            desc: "Networking event with AARP and key AgeTech investors. Perfect for startups in digital health and longevity.",
+            attendees: [90, 91, 92, 93]
+        },
+        {
             title: "CES Keynote: All-In Interview",
             date: "Jan 6",
             time: "2:00 PM",
@@ -384,6 +418,15 @@
             type: "Party",
             desc: "The premier press and business reception where startups demo directly to hundreds of journalists and investors.",
             attendees: [4, 7, 38]
+        },
+        {
+            title: "The Upside of Investing in Aging",
+            date: "Jan 7",
+            time: "1:00 PM - 1:30 PM",
+            location: "Venetian Expo",
+            type: "Panel",
+            desc: "Investors discuss emerging opportunities in the $45 trillion longevity economy and AgeTech.",
+            attendees: [90, 91, 92]
         },
         {
             title: "Betting on Bots: The Investment Case for Robotics",
@@ -438,6 +481,15 @@
             type: "Competition",
             desc: "Global finals of the Startup World Cup with $1M grand prize. Hosted by Pegasus Tech Ventures.",
             attendees: [38, 75, 79, 80, 85]
+        },
+        {
+            title: "Shark Tank Live Pitch Competition",
+            date: "Jan 8",
+            time: "1:00 PM - 3:00 PM",
+            location: "Venetian Ballroom",
+            type: "Competition",
+            desc: "Watch the Sharks judge live pitches from CES exhibitors. A rare chance to see Mark Cuban and team in action.",
+            attendees: [96, 97, 98, 99]
         }
     ];
 
